@@ -1,7 +1,25 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
 var promMid = require('express-prometheus-middleware');
 var fs = require('fs');
+//limit ips (only allow prometheus)
+app.use('/metrics', function (req, res, next) {
+    let ip;
+    if (req.headers['x-forwarded-for']) {
+        ip = req.headers['x-forwarded-for'].split(",")[0];
+    } else if (req.connection && req.connection.remoteAddress) {
+        ip = req.connection.remoteAddress;
+    } else {
+        ip = req.ip;
+    }
+    console.log("Check Metrics IP: " + ip);
+    // limit ip call service
+    if (!['::ffff:192.168.10.111', '::ffff:192.168.1.106'].includes(ip)) {
+        res.json({ message: 'IP Invalid!', resultCode: 0 });
+        return "";
+    }
+    next();
+});
 app.use(promMid({
     metricsPath: '/metrics',
     collectDefaultMetrics: true,
