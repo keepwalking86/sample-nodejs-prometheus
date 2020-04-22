@@ -1,6 +1,6 @@
                                       =====================================
 
-Yêu cầu cài đặt : Node.js, npm, and pm2
+Yêu cầu cài đặt : Node.js, npm
 
 $ git clone https://github.com/keepwalking86/sample-nodejs-prometheus.git
 
@@ -8,7 +8,7 @@ $ cd sample-nodejs-prometheus
 
 $ npm install
 
-$ pm2 install index.js --name nodejs-prometheus
+$ node index.js
 
 Browser : http://localhost:3000/metrics
 
